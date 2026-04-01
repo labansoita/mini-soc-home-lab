@@ -1,0 +1,20 @@
+version: '3'
+services:
+  splunk-lab:
+    image: splunk/splunk:latest
+    container_name: splunk-lab
+    environment:
+      # THE FIX: Both flags are now required for the latest version
+      - SPLUNK_START_ARGS=--accept-license
+      - SPLUNK_GENERAL_TERMS=--accept-sgt-current-at-splunk-com
+      - SPLUNK_PASSWORD=LabSplunk@2026!
+    ports:
+      - "8000:8000"
+    volumes:
+      # Data storage
+      - /home/lapiz/splunk-data/var:/opt/splunk/var
+      # The log bridge
+      - /home/lapiz/soc-logs:/logs
+      # Time sync to fix the "15-minute search" issue
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
